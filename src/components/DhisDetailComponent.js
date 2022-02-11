@@ -1,11 +1,8 @@
-import React,{ Component } from "react";
-import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle, List  } from 'reactstrap';
+import React from "react";
+import { Card, CardImg,  CardText, CardBody, CardTitle } from 'reactstrap';
 
-class DishDetail extends Component {
 
-  
-
-    renderDish(dish){
+    function RenderDish({dish}){
         if (dish != null){
             return(
                 <Card>
@@ -24,14 +21,14 @@ class DishDetail extends Component {
         }
     }
 
-    renderComment(comments){
+    function RenderComment({comments}){
         if (comments != null){
             const list = comments.map((comment) => {
                 return(  
                     <div>
                         <li key={comment.id}>
                             <p>{comment.comment}</p>
-                            <p>-- {comment.author}, {comment.date}</p>
+                            <p>-- {comment.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}</p>
                             
                         </li>
                         
@@ -51,17 +48,18 @@ class DishDetail extends Component {
             return <div></div>
         }
     }
-
-    render(){
-        if (this.props.selectedDish != null){
+    
+    const DishDetail = (props) =>{
+        console.log('Dishdetail Component render invoked');
+        if (props.dish != null){
             
             return(
                 <div className="row">
                     <div className="col-12 col-md-5 m-1">
-                        <div>{this.renderDish(this.props.selectedDish)}</div>
+                        <div><RenderDish dish={props.dish}/></div>
                     </div>
                     <div className="col-12 col-md-5 m-1">
-                        <div>{this.renderComment(this.props.selectedDish.comments)}</div>
+                        <div><RenderComment comments={props.dish.comments}></RenderComment></div>
                     </div>
                     
                 </div>
@@ -69,11 +67,12 @@ class DishDetail extends Component {
             );
         } 
         else {
+            
             return <div></div>;
         }
 
     }
 
-}
+
 
 export default DishDetail;
